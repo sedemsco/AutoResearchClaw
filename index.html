@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Cave du Vigneron — Château Tour La Vérité 2024</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --wine:#7B1C2E;
+      --wine-dark:#4A0D1A;
+      --wine-light:#A8324A;
+      --gold:#C9A84C;
+      --gold-light:#E8D08A;
+      --cream:#FAF6F0;
+      --cream-dark:#F0E8DC;
+      --text:#2C1810;
+      --text-muted:#6B5B52;
+    }
+    body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--text)}
+
+    /* ===== HEADER ===== */
+    header{background:var(--wine-dark);padding:0 2rem}
+    .header-top{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid rgba(201,168,76,0.3);flex-wrap:wrap;gap:0.8rem}
+    .logo{font-family:'Playfair Display',serif;color:var(--gold);font-size:1.5rem;letter-spacing:2px;text-transform:uppercase}
+    .logo span{display:block;font-size:0.7rem;font-weight:300;color:var(--gold-light);letter-spacing:4px;font-family:'Lato',sans-serif}
+    .header-actions{display:flex;gap:0.8rem;align-items:center;flex-wrap:wrap}
+    .search-bar{background:rgba(255,255,255,0.1);border:1px solid rgba(201,168,76,0.3);color:white;padding:0.4rem 0.9rem;width:220px;font-family:'Lato',sans-serif;font-size:0.8rem;border-radius:2px}
+    .search-bar::placeholder{color:rgba(255,255,255,0.4)}
+    .btn-link{background:none;border:1px solid rgba(201,168,76,0.5);color:var(--gold-light);padding:0.4rem 1rem;cursor:pointer;font-family:'Lato',sans-serif;font-size:0.8rem;letter-spacing:1px;text-transform:uppercase;transition:all 0.2s}
+    .btn-link:hover{background:var(--gold);color:var(--wine-dark);border-color:var(--gold)}
+    .cart-btn{position:relative;background:var(--gold);border:none;color:var(--wine-dark);padding:0.5rem 1.2rem;cursor:pointer;font-family:'Lato',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;display:flex;align-items:center;gap:0.5rem;border-radius:2px;transition:background 0.2s}
+    .cart-btn:hover{background:var(--gold-light)}
+    .cart-count{background:var(--wine);color:white;border-radius:50%;width:20px;height:20px;font-size:0.7rem;display:flex;align-items:center;justify-content:center;font-weight:700}
+    nav{display:flex;gap:2rem;padding:0.75rem 0;flex-wrap:wrap}
+    nav a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color 0.2s;font-weight:300}
+    nav a:hover,nav a.active{color:var(--gold)}
+
+    /* ===== BREADCRUMB ===== */
+    .breadcrumb{background:var(--cream-dark);padding:0.6rem 2rem;font-size:0.75rem;color:var(--text-muted);letter-spacing:0.5px}
+    .breadcrumb span{color:var(--wine);cursor:pointer}
+    .breadcrumb span:hover{text-decoration:underline}
+
+    /* ===== MAIN LAYOUT ===== */
+    .main{max-width:1100px;margin:0 auto;padding:2.5rem 2rem}
+    .product-grid{display:grid;grid-template-columns:400px 1fr;gap:3.5rem;margin-bottom:3rem}
+
+    /* ===== PRODUCT IMAGE ===== */
+    .product-image-area{position:relative}
+    .badge-appellation{position:absolute;top:1rem;left:1rem;z-index:10;background:var(--wine);color:white;padding:0.3rem 0.8rem;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase}
+    .wine-bottle-frame{background:linear-gradient(135deg,#1a0a0f 0%,#3d1520 50%,#1a0a0f 100%);height:480px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .wine-bottle-frame::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 30%,rgba(201,168,76,0.08) 0%,transparent 60%)}
+    .bottle-img{height:400px;object-fit:contain;filter:drop-shadow(0 10px 30px rgba(0,0,0,0.6));position:relative;z-index:1}
+    .bottle-fallback{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%}
+    .thumbnails{display:flex;gap:0.5rem;margin-top:0.8rem}
+    .thumb{width:70px;height:70px;background:var(--cream-dark);border:2px solid transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:var(--text-muted);text-align:center;padding:0.3rem;transition:all 0.2s;line-height:1.4}
+    .thumb.active,.thumb:hover{border-color:var(--wine);color:var(--wine);background:white}
+
+    /* ===== PRODUCT INFO ===== */
+    .product-info{padding-top:0.5rem}
+    .domaine-label{font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem}
+    .product-title{font-family:'Playfair Display',serif;font-size:2.3rem;line-height:1.15;color:var(--wine-dark);margin-bottom:0.3rem}
+    .product-subtitle{font-size:0.95rem;color:var(--text-muted);font-weight:300;margin-bottom:1rem;font-style:italic}
+    .rating-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid var(--cream-dark);flex-wrap:wrap}
+    .stars{color:var(--gold);font-size:1rem;letter-spacing:2px}
+    .rating-count{font-size:0.8rem;color:var(--text-muted)}
+    .badge-phase{background:var(--cream-dark);border:1px solid var(--wine-light);color:var(--wine);font-size:0.7rem;padding:0.25rem 0.7rem;letter-spacing:1px;text-transform:uppercase}
+
+    /* ===== SPECS ===== */
+    .specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.5rem}
+    .spec-item{background:var(--cream-dark);padding:0.65rem 0.9rem;border-left:3px solid var(--cream-dark);transition:border-color 0.2s}
+    .spec-item:hover{border-left-color:var(--wine)}
+    .spec-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:0.25rem}
+    .spec-value{font-size:0.92rem;font-weight:700;color:var(--wine-dark)}
+
+    /* ===== CÉPAGES ===== */
+    .cepages{margin-bottom:1.5rem}
+    .cepages-title{font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:0.7rem}
+    .cepage-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.5rem}
+    .cepage-name{font-size:0.82rem;width:130px;color:var(--text)}
+    .cepage-bar-bg{flex:1;height:7px;background:var(--cream-dark);border-radius:4px;overflow:hidden}
+    .cepage-bar{height:7px;background:linear-gradient(to right,var(--wine-light),var(--wine-dark));border-radius:4px;transition:width 0.8s ease}
+    .cepage-pct{font-size:0.82rem;color:var(--wine);font-weight:700;width:38px;text-align:right}
+
+    /* ===== PRIX ===== */
+    .price-block{margin-bottom:1rem}
+    .price-main{font-family:'Playfair Display',serif;font-size:2.8rem;color:var(--wine-dark);line-height:1}
+    .price-unit{font-size:0.85rem;color:var(--text-muted);margin-left:0.3rem;font-family:'Lato',sans-serif}
+    .price-range{font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem}
+    .stock-badge{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:#2d6a3f;font-weight:700;margin-bottom:1.2rem}
+    .stock-dot{width:9px;height:9px;border-radius:50%;background:#2d6a3f;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+    /* ===== ADD TO CART ===== */
+    .add-to-cart-row{display:flex;gap:0.8rem;margin-bottom:1.2rem;flex-wrap:wrap}
+    .qty-selector{display:flex;align-items:center;border:1px solid #ccc;background:white}
+    .qty-btn{background:none;border:none;width:40px;height:46px;font-size:1.3rem;cursor:pointer;color:var(--wine);font-weight:700;transition:background 0.2s}
+    .qty-btn:hover{background:var(--cream-dark)}
+    .qty-display{width:46px;text-align:center;font-weight:700;font-size:1rem;line-height:46px}
+    .btn-cart{flex:1;min-width:180px;background:var(--wine);color:white;border:none;padding:0 1.5rem;height:46px;font-family:'Lato',sans-serif;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:700;transition:all 0.2s}
+    .btn-cart:hover{background:var(--wine-dark)}
+    .btn-wishlist{background:none;border:1px solid var(--wine);color:var(--wine);width:46px;height:46px;cursor:pointer;font-size:1.1rem;transition:all 0.2s}
+    .btn-wishlist:hover{background:var(--wine);color:white}
+
+    /* ===== PRODUCER ===== */
+    .producer-card{background:var(--cream-dark);border-left:4px solid var(--gold);padding:0.9rem 1.1rem;font-size:0.83rem;color:var(--text-muted);line-height:1.8}
+    .producer-card strong{color:var(--wine-dark)}
+
+    /* ===== VIEILLISSEMENT ===== */
+    .vieillissement{display:grid;grid-template-columns:repeat(4,1fr);margin-bottom:3rem;border:1px solid var(--cream-dark)}
+    .vieill-phase{padding:1.2rem;text-align:center;border-right:1px solid var(--cream-dark);background:white;transition:background 0.2s}
+    .vieill-phase:last-child{border-right:none}
+    .vieill-phase.active{background:var(--wine);color:white}
+    .vieill-phase:not(.active):hover{background:var(--cream-dark)}
+    .vieill-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.4rem;opacity:0.75}
+    .vieill-years{font-family:'Playfair Display',serif;font-size:1rem;font-weight:600}
+
+    /* ===== ACCORDION ===== */
+    .section-sep{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--wine-dark);margin-bottom:1.5rem;padding-bottom:0.5rem;border-bottom:2px solid var(--gold);display:inline-block}
+    .accordion{border:1px solid var(--cream-dark);margin-bottom:3rem;background:white}
+    .acc-item{border-bottom:1px solid var(--cream-dark)}
+    .acc-item:last-child{border-bottom:none}
+    .acc-header{display:flex;justify-content:space-between;align-items:center;padding:1.1rem 1.3rem;cursor:pointer;background:white;transition:background 0.2s}
+    .acc-header:hover{background:var(--cream)}
+    .acc-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--wine-dark)}
+    .acc-icon{color:var(--wine);font-size:1.3rem;font-weight:300;transition:transform 0.3s;line-height:1}
+    .acc-icon.open{transform:rotate(45deg)}
+    .acc-content{max-height:0;overflow:hidden;transition:max-height 0.4s ease;background:var(--cream)}
+    .acc-content.open{max-height:500px}
+    .acc-body{padding:1.3rem;font-size:0.88rem;line-height:1.85;color:var(--text-muted)}
+    .acc-body strong{color:var(--wine-dark)}
+
+    /* ===== MILLÉSIMES ===== */
+    .millesimes-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:3.5rem}
+    .mil-card{background:white;border:1px solid var(--cream-dark);cursor:pointer;transition:all 0.25s;overflow:hidden}
+    .mil-card:hover{border-color:var(--wine);box-shadow:0 6px 24px rgba(123,28,46,0.13);transform:translateY(-2px)}
+    .mil-card.current{border:2px solid var(--gold)}
+    .mil-img{background:linear-gradient(135deg,#2a0d14,#4d1a25);height:130px;display:flex;align-items:center;justify-content:center;position:relative}
+    .mil-bottle{width:22px;height:88px;background:linear-gradient(to bottom,#1a0009,#4d1520);border-radius:3px 3px 0 0;position:relative}
+    .mil-bottle::before{content:'';position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:9px;height:18px;background:#1a0009;border-radius:3px 3px 0 0}
+    .mil-bottle::after{content:'';position:absolute;top:10px;left:2px;right:2px;height:28px;background:rgba(250,246,240,0.15);border-radius:2px}
+    .mil-badge-phase{position:absolute;bottom:0.5rem;right:0.5rem;font-size:0.6rem;padding:0.2rem 0.5rem;letter-spacing:1px;text-transform:uppercase;font-weight:700}
+    .phase-jeunesse{background:rgba(180,220,255,0.92);color:#1a4d7a}
+    .phase-maturite{background:rgba(180,240,200,0.92);color:#1a5c2a}
+    .phase-apogee{background:rgba(255,220,100,0.92);color:#7a5a00}
+    .phase-declin{background:rgba(255,185,185,0.92);color:#7a1a1a}
+    .mil-info{padding:0.9rem}
+    .mil-year{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--wine-dark);font-weight:600;line-height:1}
+    .mil-name{font-size:0.7rem;color:var(--text-muted);margin-bottom:0.4rem;margin-top:0.15rem}
+    .mil-price{font-size:0.9rem;color:var(--wine);font-weight:700}
+    .current-tag{position:absolute;top:0.5rem;left:0.5rem;background:var(--gold);color:var(--wine-dark);font-size:0.6rem;padding:0.2rem 0.5rem;font-weight:700;letter-spacing:1px}
+
+    /* ===== TOAST ===== */
+    .toast{position:fixed;bottom:2rem;right:2rem;background:var(--wine-dark);color:white;padding:1rem 1.5rem;border-left:4px solid var(--gold);font-size:0.88rem;opacity:0;transform:translateX(120%);transition:all 0.35s;z-index:999;max-width:320px;line-height:1.5}
+    .toast.show{opacity:1;transform:translateX(0)}
+
+    /* ===== FOOTER ===== */
+    footer{background:var(--wine-dark);color:rgba(255,255,255,0.7);padding:2.5rem 2rem}
+    .footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.5rem}
+    .footer-brand{font-family:'Playfair Display',serif;color:var(--gold);font-size:1.3rem;margin-bottom:0.6rem}
+    .footer-col h4{color:var(--gold-light);letter-spacing:2px;font-size:0.7rem;text-transform:uppercase;margin-bottom:0.9rem}
+    .footer-col p{margin-bottom:0.5rem;color:rgba(255,255,255,0.6);font-size:0.8rem;line-height:1.7}
+    .footer-col a{display:block;margin-bottom:0.45rem;color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.8rem;transition:color 0.2s;cursor:pointer}
+    .footer-col a:hover{color:var(--gold)}
+    .footer-bottom{max-width:1100px;margin:2rem auto 0;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,0.12);display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;color:rgba(255,255,255,0.38);flex-wrap:wrap;gap:0.5rem}
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:820px){
+      .product-grid{grid-template-columns:1fr}
+      .millesimes-grid{grid-template-columns:repeat(2,1fr)}
+      .vieillissement{grid-template-columns:repeat(2,1fr)}
+      .vieill-phase{border-bottom:1px solid var(--cream-dark)}
+      .footer-inner{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:540px){
+      .specs-grid{grid-template-columns:1fr}
+      .millesimes-grid{grid-template-columns:repeat(2,1fr)}
+      .footer-inner{grid-template-columns:1fr}
+      .footer-bottom{flex-direction:column;text-align:center}
+      header{padding:0 1rem}
+      .main{padding:1.5rem 1rem}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="header-top">
+    <div class="logo">La Cave du Vigneron<span>Bordeaux · Grand Cru Selection</span></div>
+    <div class="header-actions">
+      <input class="search-bar" type="text" placeholder="Rechercher un vin, un château...">
+      <button class="btn-link">Connexion</button>
+      <button class="cart-btn" id="cartBtn">
+        🛒 Panier
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+  <nav>
+    <a href="#" class="active">Accueil</a>
+    <a href="#">Bordeaux</a>
+    <a href="#">Bourgogne</a>
+    <a href="#">Champagne</a>
+    <a href="#">Rhône</a>
+    <a href="#">Coffrets</a>
+    <a href="#">Producteurs</a>
+  </nav>
+</header>
+
+<!-- ===== BREADCRUMB ===== -->
+<div class="breadcrumb">
+  <span>Accueil</span> ›
+  <span>France</span> ›
+  <span>Bordeaux</span> ›
+  <span>Bordeaux AOC</span> ›
+  Château Tour La Vérité 2024
+</div>
+
+<!-- ===== MAIN ===== -->
+<div class="main">
+
+  <!-- PRODUCT GRID -->
+  <div class="product-grid">
+
+    <!-- IMAGE -->
+    <div class="product-image-area">
+      <div class="badge-appellation">AOC Bordeaux</div>
+      <div class="wine-bottle-frame">
+        <img
+          src="https://media-viniou.com/wine-info/372073/vin-rouge-sec-chateau-tour-la-verite-2024-france-bordeaux-aoc-24.jpeg"
+          class="bottle-img"
+          alt="Château Tour La Vérité 2024 — Bordeaux AOC Rouge"
+          onerror="this.style.display='none';document.getElementById('bottleFallback').style.display='flex'">
+        <div id="bottleFallback" class="bottle-fallback" style="display:none">
+          <svg width="80" height="300" viewBox="0 0 80 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="25" y="0" width="30" height="20" rx="4" fill="#2a0d14"/>
+            <rect x="20" y="20" width="40" height="240" rx="8" fill="#3d1520"/>
+            <rect x="22" y="95" width="36" height="90" rx="2" fill="#FAF6F0" opacity="0.9"/>
+            <text x="40" y="120" text-anchor="middle" font-family="Georgia,serif" font-size="5" fill="#7B1C2E" font-weight="bold">CHÂTEAU</text>
+            <text x="40" y="130" text-anchor="middle" font-family="Georgia,serif" font-size="4" fill="#7B1C2E">TOUR LA VÉRITÉ</text>
+            <text x="40" y="148" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#7B1C2E" font-weight="bold">2024</text>
+            <text x="40" y="162" text-anchor="middle" font-family="Arial,sans-serif" font-size="4" fill="#6B5B52">BORDEAUX AOC</text>
+            <rect x="20" y="260" width="40" height="20" fill="#2a0d14"/>
+          </svg>
+        </div>
+      </div>
+      <div class="thumbnails">
+        <div class="thumb active">2024<br>Jeunesse</div>
+        <div class="thumb">2022<br>Maturité</div>
+        <div class="thumb">2020<br>Apogée</div>
+        <div class="thumb">2016<br>Apogée</div>
+      </div>
+    </div>
+
+    <!-- PRODUCT INFO -->
+    <div class="product-info">
+      <div class="domaine-label">Domaine EARL Tabouy · Pellegrue, Gironde</div>
+      <h1 class="product-title">Château Tour La Vérité</h1>
+      <div class="product-subtitle">Bordeaux AOC — Rouge sec — 75 cl — Millésime 2024</div>
+
+      <div class="rating-row">
+        <span class="stars">★★★★☆</span>
+        <span class="rating-count">1 avis utilisateur</span>
+        <span class="badge-phase">Jeunesse</span>
+      </div>
+
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-label">Région</div>
+          <div class="spec-value">Bordeaux, France</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Appellation</div>
+          <div class="spec-value">AOC Bordeaux</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Degré d'alcool</div>
+          <div class="spec-value">13 % vol.</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Contenant</div>
+          <div class="spec-value">Bouteille 75 cl</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Couleur</div>
+          <div class="spec-value">Rouge sec</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Millésime</div>
+          <div class="spec-value">2024</div>
+        </div>
+      </div>
+
+      <div class="cepages">
+        <div class="cepages-title">Assemblage des cépages</div>
+        <div class="cepage-row">
+          <span class="cepage-name">Merlot</span>
+          <div class="cepage-bar-bg"><div class="cepage-bar" style="width:65%"></div></div>
+          <span class="cepage-pct">65 %</span>
+        </div>
+        <div class="cepage-row">
+          <span class="cepage-name">Cab. Sauvignon</span>
+          <div class="cepage-bar-bg"><div class="cepage-bar" style="width:25%"></div></div>
+          <span class="cepage-pct">25 %</span>
+        </div>
+        <div class="cepage-row">
+          <span class="cepage-name">Cab. Franc</span>
+          <div class="cepage-bar-bg"><div class="cepage-bar" style="width:10%"></div></div>
+          <span class="cepage-pct">10 %</span>
+        </div>
+      </div>
+
+      <div class="price-block">
+        <div class="price-main">12,00 €<span class="price-unit">/ bouteille</span></div>
+        <div class="price-range">Estimation marché : entre 11 € et 13 € (mars 2026)</div>
+      </div>
+
+      <div class="stock-badge">
+        <span class="stock-dot"></span>
+        En stock — Expédition sous 48h
+      </div>
+
+      <div class="add-to-cart-row">
+        <div class="qty-selector">
+          <button class="qty-btn" onclick="changeQty(-1)" aria-label="Diminuer la quantité">−</button>
+          <span class="qty-display" id="qty">1</span>
+          <button class="qty-btn" onclick="changeQty(1)" aria-label="Augmenter la quantité">+</button>
+        </div>
+        <button class="btn-cart" id="btnCart" onclick="addToCart()">Ajouter au panier</button>
+        <button class="btn-wishlist" title="Ajouter à ma liste de souhaits" onclick="toggleWishlist(this)">♡</button>
+      </div>
+
+      <div class="producer-card">
+        <strong>Producteur :</strong> EARL Tabouy — Château Tour La Vérité<br>
+        Pellegrue, 33790 Gironde, France<br>
+        <strong>Tél. :</strong> <a href="tel:0556613541" style="color:var(--wine);text-decoration:none">05 56 61 35 41</a>
+        — <strong>Commandes directes acceptées</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEILLISSEMENT -->
+  <div style="margin-bottom:1rem"><span class="section-sep">Potentiel de vieillissement</span></div>
+  <div class="vieillissement" style="margin-bottom:3rem">
+    <div class="vieill-phase active">
+      <div class="vieill-label">Jeunesse</div>
+      <div class="vieill-years">2024 – 2026</div>
+    </div>
+    <div class="vieill-phase">
+      <div class="vieill-label">Maturité</div>
+      <div class="vieill-years">2027 – 2030</div>
+    </div>
+    <div class="vieill-phase">
+      <div class="vieill-label">Apogée</div>
+      <div class="vieill-years">2031 – 2035</div>
+    </div>
+    <div class="vieill-phase">
+      <div class="vieill-label">Déclin</div>
+      <div class="vieill-years">2036 – 2043+</div>
+    </div>
+  </div>
+
+  <!-- ACCORDION -->
+  <div style="margin-bottom:1rem"><span class="section-sep">Détails du vin</span></div>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(0)">
+        <span class="acc-title">Description &amp; Notes de dégustation</span>
+        <span class="acc-icon" id="icon0">+</span>
+      </div>
+      <div class="acc-content" id="acc0">
+        <div class="acc-body">
+          Le <strong>Château Tour La Vérité 2024</strong> est un vin rouge issu de l'AOC Bordeaux, assemblant Merlot (65 %), Cabernet Sauvignon (25 %) et Cabernet Franc (10 %). Ce millésime encore en jeunesse révèle une robe carmin intense aux reflets violacés. Le nez offre des arômes de fruits noirs frais — cassis, mûre — accompagnés de notes florales délicates. En bouche, la structure tannique est présente mais soyeuse, portée par une belle fraîcheur. La finale est longue et fruitée.<br><br>
+          Conseils de service : carafer 30 minutes avant dégustation. Servir entre <strong>16 et 18 °C</strong>.
+        </div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(1)">
+        <span class="acc-title">Accords mets &amp; vins</span>
+        <span class="acc-icon" id="icon1">+</span>
+      </div>
+      <div class="acc-content" id="acc1">
+        <div class="acc-body">
+          Ce Bordeaux rouge s'accorde parfaitement avec :<br><br>
+          • <strong>Magret de canard rôti</strong> sauce au vin rouge<br>
+          • <strong>Confit de canard</strong> ou entrecôte à la bordelaise<br>
+          • <strong>Plateau de fromages</strong> à pâte dure (Comté, Saint-Nectaire)<br>
+          • Viandes rouges grillées, plats en sauce, charcuteries fines<br>
+          • Tajine d'agneau aux pruneaux
+        </div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(2)">
+        <span class="acc-title">Informations producteur — EARL Tabouy</span>
+        <span class="acc-icon" id="icon2">+</span>
+      </div>
+      <div class="acc-content" id="acc2">
+        <div class="acc-body">
+          La propriété <strong>EARL Tabouy</strong> est située à Pellegrue, dans l'Entre-Deux-Mers, en Gironde. Le Château Tour La Vérité perpétue la tradition viticole bordelaise sur des sols argilo-calcaires favorisant une maturation lente et complexe des raisins. Le domaine produit des vins dans le respect du terroir, avec un souci constant de qualité à chaque étape de la vinification.<br><br>
+          <strong>Adresse :</strong> Château Tour La Vérité, 33790 Pellegrue, Gironde<br>
+          <strong>Téléphone :</strong> <a href="tel:0556613541" style="color:var(--wine)">05 56 61 35 41</a><br>
+          <strong>Commandes directes acceptées au domaine</strong>
+        </div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(3)">
+        <span class="acc-title">Livraison &amp; conditions</span>
+        <span class="acc-icon" id="icon3">+</span>
+      </div>
+      <div class="acc-content" id="acc3">
+        <div class="acc-body">
+          • Livraison en France métropolitaine sous <strong>48h à 72h</strong><br>
+          • Emballage sécurisé anti-casse pour chaque commande<br>
+          • Livraison offerte dès <strong>6 bouteilles</strong><br>
+          • Retours acceptés sous 14 jours (bouteilles non ouvertes)<br>
+          • Paiement sécurisé : CB, PayPal, virement bancaire
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTRES MILLÉSIMES -->
+  <div style="margin-bottom:1.5rem"><span class="section-sep">Autres millésimes disponibles</span></div>
+  <div class="millesimes-grid">
+    <div class="mil-card current">
+      <div class="mil-img">
+        <span class="current-tag">● Sélection actuelle</span>
+        <div class="mil-bottle"></div>
+        <span class="mil-badge-phase phase-jeunesse">Jeunesse</span>
+      </div>
+      <div class="mil-info">
+        <div class="mil-name">Château Tour La Vérité</div>
+        <div class="mil-year">2024</div>
+        <div class="mil-price">12,00 €</div>
+      </div>
+    </div>
+    <div class="mil-card" onclick="showToast('Château Tour La Vérité 2022 ajouté au panier !')">
+      <div class="mil-img">
+        <div class="mil-bottle"></div>
+        <span class="mil-badge-phase phase-maturite">Maturité</span>
+      </div>
+      <div class="mil-info">
+        <div class="mil-name">Château Tour La Vérité</div>
+        <div class="mil-year">2022</div>
+        <div class="mil-price">13,50 €</div>
+      </div>
+    </div>
+    <div class="mil-card" onclick="showToast('Château Tour La Vérité 2020 ajouté au panier !')">
+      <div class="mil-img">
+        <div class="mil-bottle"></div>
+        <span class="mil-badge-phase phase-apogee">Apogée</span>
+      </div>
+      <div class="mil-info">
+        <div class="mil-name">Château Tour La Vérité</div>
+        <div class="mil-year">2020</div>
+        <div class="mil-price">15,00 €</div>
+      </div>
+    </div>
+    <div class="mil-card" onclick="showToast('Château Tour La Vérité 2016 ajouté au panier !')">
+      <div class="mil-img">
+        <div class="mil-bottle"></div>
+        <span class="mil-badge-phase phase-apogee">Apogée</span>
+      </div>
+      <div class="mil-info">
+        <div class="mil-name">Château Tour La Vérité</div>
+        <div class="mil-year">2016</div>
+        <div class="mil-price">18,00 €</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">La Cave du Vigneron</div>
+      <p>Sélection de grands vins de Bordeaux directement auprès des producteurs. Livraison soignée en France et en Europe.</p>
+      <p style="margin-top:0.8rem">
+        📍 33000 Bordeaux, France<br>
+        📞 05 56 00 00 00<br>
+        ✉ <a href="mailto:contact@cavedu-vigneron.fr" style="color:inherit;text-decoration:none">contact@cavedu-vigneron.fr</a>
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4>Nos vins</h4>
+      <a href="#">Bordeaux AOC</a>
+      <a href="#">Bordeaux Supérieur</a>
+      <a href="#">Saint-Émilion</a>
+      <a href="#">Pomerol</a>
+      <a href="#">Margaux</a>
+    </div>
+    <div class="footer-col">
+      <h4>Service client</h4>
+      <a href="#">Livraison &amp; retours</a>
+      <a href="#">Conseils accord mets</a>
+      <a href="#">Cave sur mesure</a>
+      <a href="#">Coffrets cadeau</a>
+      <a href="#">Programme fidélité</a>
+    </div>
+    <div class="footer-col">
+      <h4>À propos</h4>
+      <a href="#">Notre histoire</a>
+      <a href="#">Nos producteurs</a>
+      <a href="#">Blog &amp; actualités</a>
+      <a href="#">CGV &amp; mentions légales</a>
+      <a href="#">Politique de confidentialité</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 La Cave du Vigneron — Tous droits réservés</span>
+    <span>L'abus d'alcool est dangereux pour la santé. À consommer avec modération. Vente interdite aux mineurs de moins de 18 ans.</span>
+  </div>
+</footer>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toast">🛒 Ajouté au panier avec succès !</div>
+
+<script>
+  // ===== Panier =====
+  let qty = 1;
+  let cartTotal = 0;
+
+  function changeQty(delta) {
+    qty = Math.max(1, qty + delta);
+    document.getElementById('qty').textContent = qty;
+  }
+
+  function addToCart() {
+    cartTotal += qty;
+    document.getElementById('cartCount').textContent = cartTotal;
+    const btn = document.getElementById('btnCart');
+    btn.textContent = '✓ Ajouté au panier !';
+    btn.style.background = '#2d6a3f';
+    showToast(qty + ' bouteille(s) ajoutée(s) — Total : ' + cartTotal + ' bouteille(s)');
+    setTimeout(() => {
+      btn.textContent = 'Ajouter au panier';
+      btn.style.background = '';
+    }, 2000);
+  }
+
+  // ===== Wishlist =====
+  function toggleWishlist(btn) {
+    if (btn.textContent === '♡') {
+      btn.textContent = '♥';
+      btn.style.background = 'var(--wine)';
+      btn.style.color = 'white';
+      showToast('Ajouté à votre liste de souhaits');
+    } else {
+      btn.textContent = '♡';
+      btn.style.background = '';
+      btn.style.color = 'var(--wine)';
+    }
+  }
+
+  // ===== Accordion =====
+  function toggleAcc(i) {
+    const content = document.getElementById('acc' + i);
+    const icon = document.getElementById('icon' + i);
+    const isOpen = content.classList.contains('open');
+    document.querySelectorAll('.acc-content').forEach(el => el.classList.remove('open'));
+    document.querySelectorAll('.acc-icon').forEach(el => { el.textContent = '+'; el.classList.remove('open'); });
+    if (!isOpen) {
+      content.classList.add('open');
+      icon.textContent = '−';
+      icon.classList.add('open');
+    }
+  }
+
+  // ===== Toast =====
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = '🛒 ' + msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ===== Thumbnails =====
+  document.querySelectorAll('.thumb').forEach(thumb => {
+    thumb.addEventListener('click', function() {
+      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
